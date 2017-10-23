@@ -1,6 +1,7 @@
 package kmitl.finalproject.nattapon58070036.tapwinners;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,10 +21,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView profileImage;
     private Button btnLogout;
     private Button btnPlay;
+    private Button btnChatRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         if (AccessToken.getCurrentAccessToken() == null) {
             goLoginScreen();
@@ -42,8 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initInstances(){
         btnLogout = findViewById(R.id.btnLogout);
         btnPlay = findViewById(R.id.btnPlay);
+        btnChatRoom = findViewById(R.id.btnChatRoom);
         btnLogout.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
+        btnChatRoom.setOnClickListener(this);
 
     }
 
@@ -51,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         profile = Profile.getCurrentProfile();
         nameText = findViewById(R.id.nameText);
         nameText.setText("Player: " + profile.getFirstName());
-
         profileImage = findViewById(R.id.profileImage);
         Glide.with(this).load(profile.getProfilePictureUri(1000, 1000)).into(profileImage);
     }
@@ -62,8 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(view.getId() == R.id.btnLogout){
             LoginManager.getInstance().logOut();
             goLoginScreen();
-        }if(view.getId() == R.id.btnPlay){
+        }else if(view.getId() == R.id.btnPlay){
             Intent intent = new Intent(this, PlayActivity.class);
+            startActivity(intent);
+        }else if(view.getId() == R.id.btnChatRoom){
+            Intent intent = new Intent(this, ChatRoomActivity.class);
             startActivity(intent);
         }
     }
