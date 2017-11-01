@@ -3,7 +3,7 @@
     package="kmitl.finalproject.nattapon58070036.tapwinners">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    android:screenOrientation="portrait"
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,20 +15,26 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PlayActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ChatRoomActivity"
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlayActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChatRoomActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-    </application>android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ScoreBoardActivity"></activity>
+    </application>
 
 </manifest>

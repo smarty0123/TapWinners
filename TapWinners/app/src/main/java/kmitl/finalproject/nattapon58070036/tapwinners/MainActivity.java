@@ -14,6 +14,8 @@ import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 
+import kmitl.finalproject.nattapon58070036.tapwinners.model.PlayerProfile;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Profile profile;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnLogout;
     private Button btnPlay;
     private Button btnChatRoom;
+    private PlayerProfile playerProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             goLoginScreen();
         } else {
             initInstances();
+            setPlayerProfile();
             displayProfile();
         }
     }
@@ -53,11 +57,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayProfile() {
-        profile = Profile.getCurrentProfile();
         nameText = findViewById(R.id.nameText);
-        nameText.setText("Player: " + profile.getFirstName());
+        nameText.setText("Player: " + playerProfile.getPlayerFirstName());
         profileImage = findViewById(R.id.profileImage);
-        Glide.with(this).load(profile.getProfilePictureUri(1000, 1000)).into(profileImage);
+        Glide.with(this).load(playerProfile.getPlayerImage()).into(profileImage);
+    }
+
+    private void setPlayerProfile(){
+        playerProfile = new PlayerProfile();
+        profile = Profile.getCurrentProfile();
+        playerProfile.setPlayerFirstName(profile.getFirstName());
+        playerProfile.setPlayerLastName(profile.getLastName());
+        playerProfile.setPlayerId(profile.getId());
+        playerProfile.setPlayerImage(profile.getProfilePictureUri(1000, 1000));
     }
 
 
@@ -68,10 +80,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             goLoginScreen();
         }else if(view.getId() == R.id.btnPlay){
             Intent intent = new Intent(this, PlayActivity.class);
+            intent.putExtra("PlayerProfile", playerProfile);
             startActivity(intent);
         }else if(view.getId() == R.id.btnChatRoom){
             Intent intent = new Intent(this, ChatRoomActivity.class);
+            intent.putExtra("PlayerProfile", playerProfile);
             startActivity(intent);
         }
     }
 }
+

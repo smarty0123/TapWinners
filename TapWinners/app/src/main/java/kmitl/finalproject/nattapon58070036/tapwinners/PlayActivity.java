@@ -1,18 +1,31 @@
 package kmitl.finalproject.nattapon58070036.tapwinners;
 
 
-import android.content.DialogInterface;
+
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import kmitl.finalproject.nattapon58070036.tapwinners.model.PlayerProfile;
 
 public class PlayActivity extends AppCompatActivity implements View.OnClickListener {
     private int score = 0;
@@ -20,11 +33,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
     private TextView scoreText;
     private TextView tvTimer;
     private TextView tvStartGame;
-
+    private PlayerProfile playerProfile;
     private ProgressBar pbTimer;
     private CountDownTimer cdt;
-
+    private DatabaseReference child;
+    private String key;
     private boolean playing = false;
+    private int highScore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +48,40 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_play);
         initInstances();
+        playerProfile = getIntent().getParcelableExtra("PlayerProfile");
+        child = FirebaseDatabase.getInstance().getReference().child("Scoreboard");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        child.child(playerProfile.getPlayerId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    Log.i("haha", "found " + playerProfile.getPlayerId());
+                    onGetChild(dataSnapshot);
+                }else{
+                    Log.i("sad", "not found " + playerProfile.getPlayerId());
+                    playerProfile.setPlayerHighScore(highScore);//set to 0
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+    private void onGetChild(DataSnapshot dataSnapshot){
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            if(child.getKey().toString().equals("score")){
+                highScore = (int)(long) child.getValue();
+                playerProfile.setPlayerHighScore(highScore);
+            }
+
+        }
     }
 
     private void initInstances() {
@@ -46,22 +96,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         playScreen.setOnClickListener(this);
     }
 
-
-    private void alertDialog() {
-        AlertDialog.Builder builder =
-                new AlertDialog.Builder(PlayActivity.this);
-        builder.setMessage("เล่นใหม่อีกครั้ง?");
-        builder.setCancelable(false);
-        builder.setPositiveButton("ตกลง", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                playing = false;
-                finish();
-                startActivity(getIntent());
-            }
-        });
-        builder.show();
-        Toast.makeText(getApplicationContext(), "FINISH", Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onClick(final View view) {
@@ -89,7 +123,23 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                alertDialog();
+                                if (playerProfile.getPlayerHighScore() < score) {
+                                    Map<String, Object> map = new HashMap<>();
+                                    key = playerProfile.getPlayerId();
+                                    map.put(key, "");
+                                    child.updateChildren(map);
+                                    DatabaseReference message_key = child.child(key);
+                                    Map<String, Object> map2 = new HashMap<>();
+                                    map2.put("player", playerProfile.getPlayerFirstName());
+                                    map2.put("score", score);
+                                    map2.put("pic", playerProfile.getPlayerImage().toString());
+                                    message_key.updateChildren(map2);
+                                }
+                                Intent intent = new Intent(PlayActivity.this, ScoreBoardActivity.class);
+                                intent.putExtra("score", score);
+                                intent.putExtra("PlayerProfile", playerProfile);
+                                startActivity(intent);
+                                finish();
                             }
                         }, 500); //set delay as 500 ms
                     }
@@ -98,6 +148,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
             scoreText.setText("Score\n" + score);
         }
     }
+
 
     @Override
     public void onBackPressed() {
