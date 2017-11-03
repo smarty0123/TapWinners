@@ -2,6 +2,7 @@ package kmitl.finalproject.nattapon58070036.tapwinners.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import kmitl.finalproject.nattapon58070036.tapwinners.R;
@@ -31,6 +33,7 @@ public class ScoreboardAdapter extends RecyclerView.Adapter<ScoreboardHolder> {
         this.data = data;
     }
 
+
     @Override
     public ScoreboardHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -43,7 +46,7 @@ public class ScoreboardAdapter extends RecyclerView.Adapter<ScoreboardHolder> {
 
     @Override
     public void onBindViewHolder(ScoreboardHolder holder, int position) {
-        holder.rankText.setText(Integer.toString(position+1));
+        holder.rankText.setText(data.size()-position+"");
         Glide.with(context).load(data.get(position).getImgUri()).into(holder.imageView);
         holder.playerNameText.setText(data.get(position).getPlayerName());
         holder.highScoreText.setText(Integer.toString(data.get(position).getScore()));

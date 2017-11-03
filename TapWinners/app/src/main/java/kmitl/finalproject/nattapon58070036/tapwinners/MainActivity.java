@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 
 import kmitl.finalproject.nattapon58070036.tapwinners.model.PlayerProfile;
+import kmitl.finalproject.nattapon58070036.tapwinners.model.ScoreBoardModel;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnLogout;
     private Button btnPlay;
     private Button btnChatRoom;
+    private Button btnScoreboard;
     private PlayerProfile playerProfile;
 
     @Override
@@ -50,9 +53,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnLogout = findViewById(R.id.btnLogout);
         btnPlay = findViewById(R.id.btnPlay);
         btnChatRoom = findViewById(R.id.btnChatRoom);
+        btnScoreboard = findViewById(R.id.btnScoreboard);
         btnLogout.setOnClickListener(this);
         btnPlay.setOnClickListener(this);
         btnChatRoom.setOnClickListener(this);
+        btnScoreboard.setOnClickListener(this);
 
     }
 
@@ -84,6 +89,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }else if(view.getId() == R.id.btnChatRoom){
             Intent intent = new Intent(this, ChatRoomActivity.class);
+            intent.putExtra("PlayerProfile", playerProfile);
+            startActivity(intent);
+        }else if(view.getId() == R.id.btnScoreboard){
+            Intent intent = new Intent(this, ScoreBoardActivity.class);
             intent.putExtra("PlayerProfile", playerProfile);
             startActivity(intent);
         }

@@ -2,7 +2,6 @@ package kmitl.finalproject.nattapon58070036.tapwinners;
 
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,11 +19,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 
 
 import kmitl.finalproject.nattapon58070036.tapwinners.adapter.ScoreboardAdapter;
 
+import kmitl.finalproject.nattapon58070036.tapwinners.model.ChatModel;
 import kmitl.finalproject.nattapon58070036.tapwinners.model.PlayerProfile;
 import kmitl.finalproject.nattapon58070036.tapwinners.model.ScoreBoardModel;
 
@@ -50,6 +55,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         initInstances();
         setupRecyclerView();
         displayScoreboard();
+
     }
 
     private void initInstances() {
@@ -58,14 +64,16 @@ public class ScoreBoardActivity extends AppCompatActivity {
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         score = getIntent().getIntExtra("score", 0);
         scoreText.setText("" + score);
-        child = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score").limitToFirst(100);
+        child = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score");
     }
 
     private void setupRecyclerView() {
         scoreAdapter = new ScoreboardAdapter(this);
         scoreAdapter.setData(playerProfile.getScoreList());
-        Log.i("setup", "setupRecyclerView: ");
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(scoreAdapter);
     }
 
@@ -78,18 +86,13 @@ public class ScoreBoardActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(final DataSnapshot dataSnapshot, String s) {
-                onGetChild(dataSnapshot);
-                Toast.makeText(ScoreBoardActivity.this, "onChildChange", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                onGetChild(dataSnapshot);
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                onGetChild(dataSnapshot);
             }
 
             @Override
@@ -111,12 +114,10 @@ public class ScoreBoardActivity extends AppCompatActivity {
             scoreItem.setImgUri(Uri.parse(playerPic));
             scoreItem.setPlayerName(playerName);
             scoreItem.setScore(playerHighScore);
+
             playerProfile.addScoreList(scoreItem);
         }
-
         scoreAdapter.notifyDataSetChanged();
     }
-
-
 
 }
