@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kmitl.finalproject.nattapon58070036.tapwinners">
+    package="kmitl.finalproject.nattapon58070036.tapwinner">
 
     <uses-permission android:name="android.permission.INTERNET" />
     android:screenOrientation="portrait"
@@ -16,7 +16,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="kmitl.finalproject.nattapon58070036.tapwinner.WelcomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,17 +24,46 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
-            android:name=".LoginActivity"
+            android:name="kmitl.finalproject.nattapon58070036.tapwinner.MainActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="kmitl.finalproject.nattapon58070036.tapwinner.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PlayActivity"
+            android:name="kmitl.finalproject.nattapon58070036.tapwinner.PlayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatRoomActivity"
+            android:name="kmitl.finalproject.nattapon58070036.tapwinner.ChatRoomActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ScoreBoardActivity"></activity>
+        <activity android:name="kmitl.finalproject.nattapon58070036.tapwinner.ScoreBoardActivity" />
+
+        <service android:name="kmitl.finalproject.nattapon58070036.tapwinner.service.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name="kmitl.finalproject.nattapon58070036.tapwinner.service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimary" />
+
+
     </application>
 
 </manifest>

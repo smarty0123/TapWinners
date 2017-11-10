@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">Tap Winners</string>
+    <string name="app_name">Tap Winner</string>
     <string name="facebook_app_id">150751892196953</string>
+    <string name="scoreboardtext">SCOREBOARD</string>
 </resources>
