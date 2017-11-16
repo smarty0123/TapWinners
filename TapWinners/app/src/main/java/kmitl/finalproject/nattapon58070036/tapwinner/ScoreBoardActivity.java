@@ -61,7 +61,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         score = getIntent().getIntExtra("score", 0);
         notificationDB = FirebaseDatabase.getInstance().getReference().child("notifications");
-        passedPlayer = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score").endAt(score-1);
+        passedPlayer = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score").endAt(score - 1);
         scoreboardDB = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score");
     }
 
@@ -89,6 +89,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
             }
+
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
             }
@@ -119,38 +120,33 @@ public class ScoreBoardActivity extends AppCompatActivity {
         scoreAdapter.notifyDataSetChanged();
     }
 
-    private void sendNotification(){
+    private void sendNotification() {
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 onGetNotification(dataSnapshot);
-                Log.i("scoreboard", "onChildAdded: ");
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.i("scoreboard", "onChildChange: ");
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.i("scoreboard", "onChildRemove: ");
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                Log.i("scoreboard", "onChildMove: ");
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.i("scoreboard", "onChildCancel: ");
             }
         };
         passedPlayer.addChildEventListener(childEventListener);
     }
 
-    private void onGetNotification(DataSnapshot dataSnapshot){
+    private void onGetNotification(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
             playerPic = (String) ((DataSnapshot) i.next()).getValue();
@@ -162,7 +158,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
             notificationDB.child(dataSnapshot.getKey()).push().setValue(notificationData).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.i("sendnotification", "onSuccess: ");
                 }
             });
 

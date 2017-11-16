@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +17,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 
 import java.util.HashMap;
@@ -43,6 +42,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     private ChatAdapter chatAdapter;
     private PlayerProfile playerProfile;
     private ChatModel chatItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +52,17 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         onRequest_userName();
         setupRecyclerView();
         displayChatView();
-        Log.i("eiei", "onCreate: ");
+        Toast.makeText(ChatRoomActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
     }
 
     private void initInstances() {
         recyclerView = findViewById(R.id.listView);
         et_message = findViewById(R.id.editText);
         btn_send = findViewById(R.id.sendButton);
+
         btn_send.setOnClickListener(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         child = FirebaseDatabase.getInstance().getReference().child("chat");
-        Toast.makeText(ChatRoomActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
     }
 
     private void setupRecyclerView() {
@@ -76,18 +76,16 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         username = playerProfile.getPlayerFirstName();
     }
 
-    private void displayChatView(){
+    private void displayChatView() {
         child.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 onGetChild(dataSnapshot);
-                Log.i("eeeee", "onChildAdded: ");
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 onGetChild(dataSnapshot);
-                Log.i("ddddd", "onChildChanged: ");
 
             }
 
@@ -103,12 +101,10 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("databaseError", databaseError.toString());
                 Toast.makeText(ChatRoomActivity.this, "onCancelled", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
 
     private void onGetChild(DataSnapshot dataSnapshot) {
@@ -125,7 +121,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
             playerProfile.addChatList(chatItem);
         }
         int position = chatAdapter.getItemCount() - 1;
-        if(position >= 0){
+        if (position >= 0) {
             recyclerView.smoothScrollToPosition(position);
         }
         chatAdapter.notifyDataSetChanged();
@@ -134,20 +130,23 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.sendButton) {
-            Map<String, Object> map = new HashMap<>();
-            key = child.push().getKey();
-            map.put(key, "");
-            child.updateChildren(map);
-            DatabaseReference message_key = child.child(key);
-            Map<String, Object> map2 = new HashMap<>();
-            playerPic = playerProfile.getPlayerImage();
-            String pic = playerPic.toString();
-            map2.put("pic", pic);
-            map2.put("username", username);
-            map2.put("msg", et_message.getText().toString());
-            message_key.updateChildren(map2);
-            Toast.makeText(ChatRoomActivity.this, "send", Toast.LENGTH_SHORT).show();
-            et_message.setText("");
+            String message = et_message.getText().toString().trim();
+            if (!TextUtils.isEmpty(message)) {
+                Map<String, Object> map = new HashMap<>();
+                key = child.push().getKey();
+                map.put(key, "");
+                child.updateChildren(map);
+                DatabaseReference message_key = child.child(key);
+                Map<String, Object> map2 = new HashMap<>();
+                playerPic = playerProfile.getPlayerImage();
+                String pic = playerPic.toString();
+                map2.put("pic", pic);
+                map2.put("username", username);
+                map2.put("msg", message);
+                message_key.updateChildren(map2);
+                Toast.makeText(ChatRoomActivity.this, "send", Toast.LENGTH_SHORT).show();
+                et_message.setText("");
+            }
         }
     }
 }
