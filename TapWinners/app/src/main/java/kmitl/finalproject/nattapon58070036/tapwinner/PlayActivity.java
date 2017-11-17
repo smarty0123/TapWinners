@@ -1,7 +1,6 @@
 package kmitl.finalproject.nattapon58070036.tapwinner;
 
 
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
@@ -60,11 +59,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         child.child(playerProfile.getPlayerId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    Log.i("haha", "found " + playerProfile.getPlayerId());
+                if (dataSnapshot.exists()) {
                     onGetChild(dataSnapshot);
-                }else{
-                    Log.i("sad", "not found " + playerProfile.getPlayerId());
+                } else {
                     playerProfile.setPlayerHighScore(highScore);//set to 0
                 }
             }
@@ -76,10 +73,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
-    private void onGetChild(DataSnapshot dataSnapshot){
+
+    private void onGetChild(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-            if(child.getKey().toString().equals("score")){
-                highScore = (int)(long) child.getValue();
+            if (child.getKey().toString().equals("score")) {
+                highScore = (int) (long) child.getValue();
                 playerProfile.setPlayerHighScore(highScore);
             }
 
@@ -139,7 +137,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnClickListe
                                     message_key.updateChildren(map2);
 
                                 }
-                                Intent intent = new Intent(PlayActivity.this, ScoreBoardActivity.class);
+                                Intent intent = new Intent(PlayActivity.this, CurrentScoreActivity.class);
                                 intent.putExtra("score", score);
                                 intent.putExtra("PlayerProfile", playerProfile);
                                 startActivity(intent);

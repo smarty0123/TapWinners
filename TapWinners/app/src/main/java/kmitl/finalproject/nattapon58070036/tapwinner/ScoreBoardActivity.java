@@ -32,7 +32,6 @@ import kmitl.finalproject.nattapon58070036.tapwinner.model.ScoreBoardModel;
 public class ScoreBoardActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private int score;
-    private DatabaseReference notificationDB;
     private Query scoreboardDB;
     private PlayerProfile playerProfile;
     private ScoreboardAdapter scoreAdapter;
@@ -41,7 +40,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private String tokenID;
     private int playerHighScore;
     private ScoreBoardModel scoreItem;
-    private Query passedPlayer;
     private ChildEventListener childEventListener;
 
     @Override
@@ -50,7 +48,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_score_board);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initInstances();
-        sendNotification();
         setupRecyclerView();
         displayScoreboard();
 
@@ -60,8 +57,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         score = getIntent().getIntExtra("score", 0);
-        notificationDB = FirebaseDatabase.getInstance().getReference().child("notifications");
-        passedPlayer = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score").endAt(score - 1);
         scoreboardDB = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score");
     }
 
@@ -120,49 +115,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
         scoreAdapter.notifyDataSetChanged();
     }
 
-    private void sendNotification() {
-        childEventListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                onGetNotification(dataSnapshot);
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-        passedPlayer.addChildEventListener(childEventListener);
-    }
-
-    private void onGetNotification(DataSnapshot dataSnapshot) {
-        Iterator i = dataSnapshot.getChildren().iterator();
-        while (i.hasNext()) {
-            playerPic = (String) ((DataSnapshot) i.next()).getValue();
-            playerName = (String) ((DataSnapshot) i.next()).getValue();
-            playerHighScore = (int) (long) ((DataSnapshot) i.next()).getValue();
-            tokenID = (String) ((DataSnapshot) i.next()).getValue();
-            HashMap<String, String> notificationData = new HashMap<>();
-            notificationData.put("from", playerProfile.getPlayerFirstName());
-            notificationDB.child(dataSnapshot.getKey()).push().setValue(notificationData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                }
-            });
-
-        }
-
-    }
 
 }
