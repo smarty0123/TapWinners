@@ -2,35 +2,37 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-
-import java.util.HashMap;
 import java.util.Iterator;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import kmitl.finalproject.nattapon58070036.tapwinner.adapter.ScoreboardAdapter;
-
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.ScoreBoardModel;
 
 
 public class ScoreBoardActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.textView)
+    TextView textView;
+    @BindView(R.id.imageView3)
+    ImageView imageView3;
     private int score;
     private Query scoreboardDB;
     private PlayerProfile playerProfile;
@@ -54,7 +56,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     }
 
     private void initInstances() {
-        recyclerView = findViewById(R.id.recyclerView);
+        ButterKnife.bind(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         score = getIntent().getIntExtra("score", 0);
         scoreboardDB = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score");
@@ -114,7 +116,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
         }
         scoreAdapter.notifyDataSetChanged();
     }
-
 
 
 }

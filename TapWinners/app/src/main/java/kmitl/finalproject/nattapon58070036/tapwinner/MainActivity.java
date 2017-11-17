@@ -2,12 +2,10 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,28 +13,38 @@ import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.profileImage)
+    CircleImageView profileImage;
+    @BindView(R.id.nameText)
+    TextView nameText;
+    @BindView(R.id.btnLogout)
+    Button btnLogout;
+    @BindView(R.id.btnPlay)
+    Button btnPlay;
+    @BindView(R.id.btnChatRoom)
+    Button btnChatRoom;
+    @BindView(R.id.btnScoreboard)
+    Button btnScoreboard;
     private Profile profile;
-    private TextView nameText;
-    private ImageView profileImage;
-    private Button btnLogout;
-    private Button btnPlay;
-    private Button btnChatRoom;
-    private Button btnScoreboard;
     private PlayerProfile playerProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
         if (AccessToken.getCurrentAccessToken() == null) {
             goLoginScreen();
         } else {
-            initInstances();
+            ButterKnife.bind(this);
             setPlayerProfile();
             displayProfile();
         }
@@ -48,26 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    private void initInstances(){
-        btnLogout = findViewById(R.id.btnLogout);
-        btnPlay = findViewById(R.id.btnPlay);
-        btnChatRoom = findViewById(R.id.btnChatRoom);
-        btnScoreboard = findViewById(R.id.btnScoreboard);
-        btnLogout.setOnClickListener(this);
-        btnPlay.setOnClickListener(this);
-        btnChatRoom.setOnClickListener(this);
-        btnScoreboard.setOnClickListener(this);
-
-    }
-
-    private void displayProfile() {
-        nameText = findViewById(R.id.nameText);
-        nameText.setText("Player: " + playerProfile.getPlayerFirstName());
-        profileImage = findViewById(R.id.profileImage);
-        Glide.with(this).load(playerProfile.getPlayerImage()).into(profileImage);
-    }
-
-    private void setPlayerProfile(){
+    private void setPlayerProfile() {
         playerProfile = new PlayerProfile();
         profile = Profile.getCurrentProfile();
         playerProfile.setPlayerFirstName(profile.getFirstName());
@@ -76,25 +65,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playerProfile.setPlayerImage(profile.getProfilePictureUri(1000, 1000));
     }
 
+    private void displayProfile() {
+        nameText.setText("Player: " + playerProfile.getPlayerFirstName());
+        Glide.with(this).load(playerProfile.getPlayerImage()).into(profileImage);
+    }
 
-    @Override
-    public void onClick(View view) {
-        if(view.getId() == R.id.btnLogout){
-            LoginManager.getInstance().logOut();
-            goLoginScreen();
-        }else if(view.getId() == R.id.btnPlay){
-            Intent intent = new Intent(this, PlayActivity.class);
-            intent.putExtra("PlayerProfile", playerProfile);
-            startActivity(intent);
-        }else if(view.getId() == R.id.btnChatRoom){
-            Intent intent = new Intent(this, ChatRoomActivity.class);
-            intent.putExtra("PlayerProfile", playerProfile);
-            startActivity(intent);
-        }else if(view.getId() == R.id.btnScoreboard){
-            Intent intent = new Intent(this, ScoreBoardActivity.class);
-            intent.putExtra("PlayerProfile", playerProfile);
-            startActivity(intent);
-        }
+
+    @OnClick(R.id.btnLogout)
+    public void onBtnLogoutClicked() {
+        LoginManager.getInstance().logOut();
+        goLoginScreen();
+    }
+
+    @OnClick(R.id.btnPlay)
+    public void onBtnPlayClicked() {
+        Intent intent = new Intent(this, PlayActivity.class);
+        intent.putExtra("PlayerProfile", playerProfile);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btnChatRoom)
+    public void onBtnChatRoomClicked() {
+        Intent intent = new Intent(this, ChatRoomActivity.class);
+        intent.putExtra("PlayerProfile", playerProfile);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btnScoreboard)
+    public void onBtnScoreboardClicked() {
+        Intent intent = new Intent(this, ScoreBoardActivity.class);
+        intent.putExtra("PlayerProfile", playerProfile);
+        startActivity(intent);
     }
 }
 

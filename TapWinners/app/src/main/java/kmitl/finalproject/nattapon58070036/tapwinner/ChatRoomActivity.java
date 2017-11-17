@@ -2,12 +2,11 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,27 +17,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import kmitl.finalproject.nattapon58070036.tapwinner.adapter.ChatAdapter;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.ChatModel;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 
 
-public class ChatRoomActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChatRoomActivity extends AppCompatActivity {
+    @BindView(R.id.et_message)
+    EditText et_message;
+    @BindView(R.id.sendButton)
+    Button sendButton;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
     private String username;
     private DatabaseReference child;
-    private EditText et_message;
-    private Button btn_send;
     private String key;
     private String child_username;
     private String child_value;
     private Uri playerPic;
     private String child_profilePic;
-    private RecyclerView recyclerView;
     private ChatAdapter chatAdapter;
     private PlayerProfile playerProfile;
     private ChatModel chatItem;
@@ -48,6 +52,7 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_chat_room);
+        ButterKnife.bind(this);
         initInstances();
         onRequest_userName();
         setupRecyclerView();
@@ -56,11 +61,6 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initInstances() {
-        recyclerView = findViewById(R.id.listView);
-        et_message = findViewById(R.id.editText);
-        btn_send = findViewById(R.id.sendButton);
-
-        btn_send.setOnClickListener(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         child = FirebaseDatabase.getInstance().getReference().child("chat");
     }
@@ -127,26 +127,25 @@ public class ChatRoomActivity extends AppCompatActivity implements View.OnClickL
         chatAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.sendButton) {
-            String message = et_message.getText().toString().trim();
-            if (!TextUtils.isEmpty(message)) {
-                Map<String, Object> map = new HashMap<>();
-                key = child.push().getKey();
-                map.put(key, "");
-                child.updateChildren(map);
-                DatabaseReference message_key = child.child(key);
-                Map<String, Object> map2 = new HashMap<>();
-                playerPic = playerProfile.getPlayerImage();
-                String pic = playerPic.toString();
-                map2.put("pic", pic);
-                map2.put("username", username);
-                map2.put("msg", message);
-                message_key.updateChildren(map2);
-                Toast.makeText(ChatRoomActivity.this, "send", Toast.LENGTH_SHORT).show();
-                et_message.setText("");
-            }
+
+    @OnClick(R.id.sendButton)
+    public void onViewClicked() {
+        String message = et_message.getText().toString().trim();
+        if (!TextUtils.isEmpty(message)) {
+            Map<String, Object> map = new HashMap<>();
+            key = child.push().getKey();
+            map.put(key, "");
+            child.updateChildren(map);
+            DatabaseReference message_key = child.child(key);
+            Map<String, Object> map2 = new HashMap<>();
+            playerPic = playerProfile.getPlayerImage();
+            String pic = playerPic.toString();
+            map2.put("pic", pic);
+            map2.put("username", username);
+            map2.put("msg", message);
+            message_key.updateChildren(map2);
+            Toast.makeText(ChatRoomActivity.this, "send", Toast.LENGTH_SHORT).show();
+            et_message.setText("");
         }
     }
 }
