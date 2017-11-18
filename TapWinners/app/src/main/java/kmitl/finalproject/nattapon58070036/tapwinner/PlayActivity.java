@@ -41,7 +41,6 @@ public class PlayActivity extends AppCompatActivity {
     ConstraintLayout playScreen;
     private int score = 0;
     private PlayerProfile playerProfile;
-    private CountDownTimer cdt;
     private DatabaseReference child;
     private String key;
     private boolean playing = false;
@@ -113,7 +112,7 @@ public class PlayActivity extends AppCompatActivity {
             tvStartGame.setText("TAP!!!!");
             pbTimer.setVisibility(View.VISIBLE);
             tvTimer.setVisibility(View.VISIBLE);
-            cdt = new CountDownTimer(6000, 50) {
+            CountDownTimer cdt = new CountDownTimer(6000, 50) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     tvTimer.setText(String.valueOf(Long.toString((millisUntilFinished / 1000) + 1)));

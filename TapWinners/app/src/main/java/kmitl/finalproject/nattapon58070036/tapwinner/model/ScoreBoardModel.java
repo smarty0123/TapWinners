@@ -10,6 +10,7 @@ public class ScoreBoardModel {
     private String playerName;
     private int Score;
     private Uri imgUri;
+    private String tokenID;
 
     public String getPlayerName() {
         return playerName;
@@ -33,5 +34,13 @@ public class ScoreBoardModel {
 
     public void setImgUri(Uri imgUri) {
         this.imgUri = imgUri;
+    }
+
+    public String getTokenID() {
+        return tokenID;
+    }
+
+    public void setTokenID(String tokenID) {
+        this.tokenID = tokenID;
     }
 }

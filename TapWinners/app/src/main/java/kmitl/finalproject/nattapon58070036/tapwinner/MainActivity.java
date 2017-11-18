@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnChatRoom;
     @BindView(R.id.btnScoreboard)
     Button btnScoreboard;
-    private Profile profile;
+
     private PlayerProfile playerProfile;
 
     @Override
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setPlayerProfile() {
         playerProfile = new PlayerProfile();
-        profile = Profile.getCurrentProfile();
+        Profile profile = Profile.getCurrentProfile();
         playerProfile.setPlayerFirstName(profile.getFirstName());
         playerProfile.setPlayerLastName(profile.getLastName());
         playerProfile.setPlayerId(profile.getId());

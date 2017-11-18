@@ -1,9 +1,9 @@
 package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,22 +33,20 @@ public class CurrentScoreActivity extends AppCompatActivity {
     TextView tvCurrentScore;
     @BindView(R.id.btnPlayAgain)
     Button btnPlayAgain;
+
     private PlayerProfile playerProfile;
+
     private int score;
 
     private DatabaseReference notificationDB;
     private Query passedPlayer;
-    private ChildEventListener childEventListener;
-    private String playerPic;
-    private String playerName;
-    private int playerHighScore;
-    private String tokenID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_current_score);
-        ButterKnife.bind(this);
+
         initInstance();
         sendNotification();
         displayCurrentScore();
@@ -55,6 +54,8 @@ public class CurrentScoreActivity extends AppCompatActivity {
 
 
     private void initInstance() {
+        ButterKnife.bind(this);
+
         score = getIntent().getIntExtra("score", 0);
 
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
@@ -69,7 +70,7 @@ public class CurrentScoreActivity extends AppCompatActivity {
     }
 
     private void sendNotification() {
-        childEventListener = new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 onGetNotification(dataSnapshot);
@@ -97,17 +98,36 @@ public class CurrentScoreActivity extends AppCompatActivity {
     private void onGetNotification(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
-            playerPic = (String) ((DataSnapshot) i.next()).getValue();
-            playerName = (String) ((DataSnapshot) i.next()).getValue();
-            playerHighScore = (int) (long) ((DataSnapshot) i.next()).getValue();
-            tokenID = (String) ((DataSnapshot) i.next()).getValue();
-            HashMap<String, String> notificationData = new HashMap<>();
-            notificationData.put("from", playerProfile.getPlayerFirstName());
-            notificationDB.child(dataSnapshot.getKey()).push().setValue(notificationData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            String playerPic = (String) ((DataSnapshot) i.next()).getValue();
+            String playerName = (String) ((DataSnapshot) i.next()).getValue();
+            int playerHighScore = (int) (long) ((DataSnapshot) i.next()).getValue();
+            String tokenID = (String) ((DataSnapshot) i.next()).getValue();
+            notificationDB.child(dataSnapshot.getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onSuccess(Void aVoid) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.getKey().toString().equals(playerProfile.getPlayerId())) {
+                                notificationDB.child(child.getKey().toString()).child(dataSnapshot.getKey()).setValue("");
+                            }
+                        }
+                    } else {
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
                 }
             });
+            HashMap<String, String> notificationData = new HashMap<>();
+            notificationData.put("from", playerProfile.getPlayerFirstName());
+            notificationDB.child(dataSnapshot.getKey()).child(playerProfile.getPlayerId()).setValue(notificationData)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                        }
+                    });
 
         }
     }

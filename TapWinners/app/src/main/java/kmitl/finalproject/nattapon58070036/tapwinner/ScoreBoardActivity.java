@@ -33,16 +33,10 @@ public class ScoreBoardActivity extends AppCompatActivity {
     TextView textView;
     @BindView(R.id.imageView3)
     ImageView imageView3;
-    private int score;
+
     private Query scoreboardDB;
     private PlayerProfile playerProfile;
     private ScoreboardAdapter scoreAdapter;
-    private String playerName;
-    private String playerPic;
-    private String tokenID;
-    private int playerHighScore;
-    private ScoreBoardModel scoreItem;
-    private ChildEventListener childEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +52,6 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private void initInstances() {
         ButterKnife.bind(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
-        score = getIntent().getIntExtra("score", 0);
         scoreboardDB = FirebaseDatabase.getInstance().getReference().child("Scoreboard").orderByChild("score");
     }
 
@@ -73,7 +66,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     }
 
     private void displayScoreboard() {
-        childEventListener = new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 onGetScoreChild(dataSnapshot);
@@ -103,14 +96,15 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private void onGetScoreChild(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
-            playerPic = (String) ((DataSnapshot) i.next()).getValue();
-            playerName = (String) ((DataSnapshot) i.next()).getValue();
-            playerHighScore = (int) (long) ((DataSnapshot) i.next()).getValue();
-            tokenID = (String) ((DataSnapshot) i.next()).getValue();
-            scoreItem = new ScoreBoardModel();
+            String playerPic = (String) ((DataSnapshot) i.next()).getValue();
+            String playerName = (String) ((DataSnapshot) i.next()).getValue();
+            int playerHighScore = (int) (long) ((DataSnapshot) i.next()).getValue();
+            String tokenID = (String) ((DataSnapshot) i.next()).getValue();
+            ScoreBoardModel scoreItem = new ScoreBoardModel();
             scoreItem.setImgUri(Uri.parse(playerPic));
             scoreItem.setPlayerName(playerName);
             scoreItem.setScore(playerHighScore);
+            scoreItem.setTokenID(tokenID);
 
             playerProfile.addScoreList(scoreItem);
         }

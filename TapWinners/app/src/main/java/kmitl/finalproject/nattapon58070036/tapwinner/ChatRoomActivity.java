@@ -36,23 +36,20 @@ public class ChatRoomActivity extends AppCompatActivity {
     Button sendButton;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    private PlayerProfile playerProfile;
+
     private String username;
     private DatabaseReference child;
-    private String key;
-    private String child_username;
-    private String child_value;
     private Uri playerPic;
-    private String child_profilePic;
     private ChatAdapter chatAdapter;
-    private PlayerProfile playerProfile;
-    private ChatModel chatItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_chat_room);
-        ButterKnife.bind(this);
         initInstances();
         onRequest_userName();
         setupRecyclerView();
@@ -61,6 +58,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     }
 
     private void initInstances() {
+        ButterKnife.bind(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         child = FirebaseDatabase.getInstance().getReference().child("chat");
     }
@@ -110,10 +108,10 @@ public class ChatRoomActivity extends AppCompatActivity {
     private void onGetChild(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
-            child_value = (String) ((DataSnapshot) i.next()).getValue();
-            child_profilePic = (String) ((DataSnapshot) i.next()).getValue();
-            child_username = (String) ((DataSnapshot) i.next()).getValue();
-            chatItem = new ChatModel();
+            String child_value = (String) ((DataSnapshot) i.next()).getValue();
+            String child_profilePic = (String) ((DataSnapshot) i.next()).getValue();
+            String child_username = (String) ((DataSnapshot) i.next()).getValue();
+            ChatModel chatItem = new ChatModel();
             playerPic = Uri.parse(child_profilePic);
             chatItem.setImgUri(playerPic);
             chatItem.setUsername(child_username);
@@ -133,7 +131,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         String message = et_message.getText().toString().trim();
         if (!TextUtils.isEmpty(message)) {
             Map<String, Object> map = new HashMap<>();
-            key = child.push().getKey();
+            String key = child.push().getKey();
             map.put(key, "");
             child.updateChildren(map);
             DatabaseReference message_key = child.child(key);
