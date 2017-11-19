@@ -1,4 +1,4 @@
-package kmitl.finalproject.nattapon58070036.tapwinner;
+package kmitl.finalproject.nattapon58070036.tapwinner.playonline;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -24,7 +24,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import kmitl.finalproject.nattapon58070036.tapwinner.R;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
+import kmitl.finalproject.nattapon58070036.tapwinner.playonline.PlayActivity;
 
 public class CurrentScoreActivity extends AppCompatActivity {
     @BindView(R.id.profileImage)
@@ -111,7 +113,6 @@ public class CurrentScoreActivity extends AppCompatActivity {
                                 notificationDB.child(child.getKey().toString()).child(dataSnapshot.getKey()).setValue("");
                             }
                         }
-                    } else {
                     }
                 }
 

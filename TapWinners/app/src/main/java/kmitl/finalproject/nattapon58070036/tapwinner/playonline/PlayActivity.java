@@ -1,4 +1,4 @@
-package kmitl.finalproject.nattapon58070036.tapwinner;
+package kmitl.finalproject.nattapon58070036.tapwinner.playonline;
 
 
 import android.content.Intent;
@@ -25,6 +25,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kmitl.finalproject.nattapon58070036.tapwinner.R;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 
 
@@ -45,7 +46,6 @@ public class PlayActivity extends AppCompatActivity {
     private String key;
     private boolean playing = false;
     private int highScore;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +93,8 @@ public class PlayActivity extends AppCompatActivity {
         scoreText.setText("Score\n " + score);
         pbTimer.setVisibility(View.INVISIBLE);
         tvTimer.setVisibility(View.INVISIBLE);
-    }
 
+    }
 
 
     @Override
@@ -112,6 +112,7 @@ public class PlayActivity extends AppCompatActivity {
             tvStartGame.setText("TAP!!!!");
             pbTimer.setVisibility(View.VISIBLE);
             tvTimer.setVisibility(View.VISIBLE);
+
             CountDownTimer cdt = new CountDownTimer(6000, 50) {
                 @Override
                 public void onTick(long millisUntilFinished) {

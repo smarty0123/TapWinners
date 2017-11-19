@@ -1,6 +1,7 @@
-package kmitl.finalproject.nattapon58070036.tapwinner;
+package kmitl.finalproject.nattapon58070036.tapwinner.chatroom;
 
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import kmitl.finalproject.nattapon58070036.tapwinner.R;
 import kmitl.finalproject.nattapon58070036.tapwinner.adapter.ChatAdapter;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.ChatModel;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
@@ -43,7 +45,21 @@ public class ChatRoomActivity extends AppCompatActivity {
     private DatabaseReference child;
     private Uri playerPic;
     private ChatAdapter chatAdapter;
+    private MediaPlayer mp;
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mp = MediaPlayer.create(this, R.raw.littleidea);
+        mp.setLooping(true);
+        mp.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

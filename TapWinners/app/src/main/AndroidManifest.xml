@@ -31,13 +31,13 @@
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PlayActivity"
+            android:name=".playonline.PlayActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatRoomActivity"
+            android:name=".chatroom.ChatRoomActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ScoreBoardActivity" />
+        <activity android:name=".playonline.ScoreBoardActivity" />
 
         <service android:name=".service.FirebaseMessagingService">
             <intent-filter>
@@ -60,7 +60,9 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
 
-        <activity android:name=".CurrentScoreActivity"></activity>
+        <activity android:name=".playonline.CurrentScoreActivity" />
+        <activity android:name=".playwithfriend.VersusFriendActivity" />
+        <activity android:name=".playwithfriend.PlayWithFriendResultActivity"></activity>
     </application>
 
 </manifest>

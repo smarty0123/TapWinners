@@ -1,6 +1,7 @@
-package kmitl.finalproject.nattapon58070036.tapwinner;
+package kmitl.finalproject.nattapon58070036.tapwinner.playonline;
 
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import java.util.Iterator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import kmitl.finalproject.nattapon58070036.tapwinner.R;
 import kmitl.finalproject.nattapon58070036.tapwinner.adapter.ScoreboardAdapter;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 import kmitl.finalproject.nattapon58070036.tapwinner.model.ScoreBoardModel;
@@ -37,6 +39,21 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private Query scoreboardDB;
     private PlayerProfile playerProfile;
     private ScoreboardAdapter scoreAdapter;
+    private MediaPlayer mp;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mp = MediaPlayer.create(this, R.raw.popdance);
+        mp.setLooping(true);
+        mp.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

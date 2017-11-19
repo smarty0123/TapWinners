@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="2"
+    android:orientation="vertical"
+    tools:context="kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.VersusFriendActivity">
+
+    <fragment
+        android:id="@+id/player2Container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        class="kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.fragment.PlayerTwoFragment"
+        tools:layout="@layout/fragment_player_two" />
+
+
+    <fragment
+        android:id="@+id/player1Container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.fragment.PlayerOneFragment"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_player_one" />
+
+
+</LinearLayout>
