@@ -4,7 +4,7 @@
     android:id="@+id/player2Fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_light"
+    android:background="#8482d4"
     android:rotation="180"
     tools:context=".playwithfriend.fragment.PlayerTwoFragment">
 

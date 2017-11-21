@@ -5,6 +5,7 @@
     android:id="@+id/playScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_header_selector"
     tools:context="kmitl.finalproject.nattapon58070036.tapwinner.playonline.PlayActivity">
 
     <TextView

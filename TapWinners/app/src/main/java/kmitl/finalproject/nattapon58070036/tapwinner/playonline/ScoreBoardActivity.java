@@ -50,7 +50,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mp = MediaPlayer.create(this, R.raw.popdance);
+        mp = MediaPlayer.create(this, R.raw.happyrock);
         mp.setLooping(true);
         mp.start();
     }

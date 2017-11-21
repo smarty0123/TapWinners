@@ -14,8 +14,6 @@ import kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.fragment.Pla
 public class VersusFriendActivity extends AppCompatActivity implements PlayerOneFragment.PlayerOneFragmentListener,
         PlayerTwoFragment.PlayerTwoFragmentListener {
 
-    private PlayerOneFragment playerOneFragment;
-    private PlayerTwoFragment playerTwoFragment;
 
     private boolean playerOnePlaying = false;
     private boolean playerTwoPlaying = false;
@@ -23,7 +21,8 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
 
-    private int allPlayerFinish = 0;
+    private boolean playerOneFinished = false;
+    private boolean playerTwoFinished = false;
 
 
     @Override
@@ -35,11 +34,8 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
     }
 
     private void initFragment() {
-        Fragment fragment1 = getSupportFragmentManager().findFragmentById(R.id.player1Container);
-        playerOneFragment = (PlayerOneFragment) fragment1;
-
-        Fragment fragment2 = getSupportFragmentManager().findFragmentById(R.id.player2Container);
-        playerTwoFragment = (PlayerTwoFragment) fragment2;
+        getSupportFragmentManager().findFragmentById(R.id.player1Container);
+        getSupportFragmentManager().findFragmentById(R.id.player2Container);
 
     }
 
@@ -66,9 +62,8 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
 
     @Override
     public void onPlayerOneFinished() {
-        allPlayerFinish++;
-        playerOnePlaying = false;
-        if (allPlayerFinish == 2) {
+        playerOneFinished = true;
+        if (playerOneFinished && playerTwoFinished) {
             goToPlayWithFriendResult();
         }
 
@@ -81,9 +76,8 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
 
     @Override
     public void onPlayerTwoFinished() {
-        allPlayerFinish++;
-        playerTwoPlaying = false;
-        if (allPlayerFinish == 2) {
+        playerTwoFinished = true;
+        if (playerOneFinished && playerTwoFinished) {
             goToPlayWithFriendResult();
         }
 

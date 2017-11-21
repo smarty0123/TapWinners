@@ -2,8 +2,10 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mp = MediaPlayer.create(this, R.raw.cute);
+        mp = MediaPlayer.create(this, R.raw.popdance);
         mp.setLooping(true);
         mp.start();
     }
@@ -71,11 +73,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void goLoginScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
 
     private void setPlayerProfile() {
         playerProfile = new PlayerProfile();
