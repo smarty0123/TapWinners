@@ -3,12 +3,16 @@ package kmitl.finalproject.nattapon58070036.tapwinner.playonline;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.thunderrise.animations.PulseAnimation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +51,7 @@ public class PlayActivity extends AppCompatActivity {
     private String key;
     private boolean playing = false;
     private int highScore;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +64,24 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        mp = MediaPlayer.create(this, R.raw.happyrock);
+        mp.setLooping(true);
+        mp.start();
         child.child(playerProfile.getPlayerId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     onGetChild(dataSnapshot);
                 } else {
-                    playerProfile.setPlayerHighScore(highScore);//set to 0
+                    playerProfile.setPlayerHighScore(highScore);
                 }
             }
 
@@ -93,8 +108,9 @@ public class PlayActivity extends AppCompatActivity {
         scoreText.setText("Score\n " + score);
         pbTimer.setVisibility(View.INVISIBLE);
         tvTimer.setVisibility(View.INVISIBLE);
-
+        setAnimationView(1000);
     }
+
 
 
     @Override
@@ -109,7 +125,9 @@ public class PlayActivity extends AppCompatActivity {
         score++;
         if (score == 1) { //player start tap
             playing = true;
-            tvStartGame.setText("TAP!!!!");
+            tvStartGame.setText("MORE TAP\nMORE SCORE!!");
+            tvStartGame.setTextSize(30);
+            setAnimationView(100);
             pbTimer.setVisibility(View.VISIBLE);
             tvTimer.setVisibility(View.VISIBLE);
 
@@ -125,6 +143,7 @@ public class PlayActivity extends AppCompatActivity {
                     view.setOnClickListener(null);
                     pbTimer.setVisibility(View.INVISIBLE);
                     tvTimer.setVisibility(View.INVISIBLE);
+                    tvStartGame.setTextSize(50);
                     tvStartGame.setText("Time Out!");
                     final Handler handler = new Handler();//start deley timing
                     handler.postDelayed(new Runnable() {
@@ -150,11 +169,20 @@ public class PlayActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
-                    }, 500); //set delay as 500 ms
+                    }, 2000);
                 }
             }.start();
         }
         scoreText.setText("Score\n" + score);
 
     }
+
+    private void setAnimationView(int duration) {
+        PulseAnimation.create().with(tvStartGame)
+                .setDuration(duration)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
+    }
+
 }

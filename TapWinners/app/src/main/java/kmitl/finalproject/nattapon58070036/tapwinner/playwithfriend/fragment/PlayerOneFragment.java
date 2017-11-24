@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.thunderrise.animations.PulseAnimation;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -65,8 +67,11 @@ public class PlayerOneFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         pbTimer.setVisibility(View.INVISIBLE);
         tvTimer.setVisibility(View.INVISIBLE);
+        setAnimationView();
         return view;
     }
+
+
 
     @Override
     public void onDestroyView() {
@@ -78,7 +83,7 @@ public class PlayerOneFragment extends Fragment {
     public void onViewClicked(final View view) {
         score++;
         tvScore.setText(String.valueOf(score));
-        if (score == 1) { //player start tap
+        if (score == 1) {
             listener.onPlayerOnePlaying();
             pbTimer.setVisibility(View.VISIBLE);
             tvTimer.setVisibility(View.VISIBLE);
@@ -101,6 +106,14 @@ public class PlayerOneFragment extends Fragment {
             }.start();
         }
 
+    }
+
+    private void setAnimationView() {
+        PulseAnimation.create().with(tvScore)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
     }
 
     public interface PlayerOneFragmentListener {

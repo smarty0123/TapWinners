@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.thunderrise.animations.PulseAnimation;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,8 +35,8 @@ import kmitl.finalproject.nattapon58070036.tapwinner.model.PlayerProfile;
 public class ChatRoomActivity extends AppCompatActivity {
     @BindView(R.id.et_message)
     EditText et_message;
-    @BindView(R.id.sendButton)
-    Button sendButton;
+    @BindView(R.id.btnSend)
+    Button btnSend;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
@@ -70,6 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         onRequest_userName();
         setupRecyclerView();
         displayChatView();
+        setAnimationView();
         Toast.makeText(ChatRoomActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
     }
 
@@ -77,6 +79,14 @@ public class ChatRoomActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         playerProfile = getIntent().getParcelableExtra("PlayerProfile");
         child = FirebaseDatabase.getInstance().getReference().child("chat");
+    }
+
+    private void setAnimationView() {
+        PulseAnimation.create().with(btnSend)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
     }
 
     private void setupRecyclerView() {
@@ -142,7 +152,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     }
 
 
-    @OnClick(R.id.sendButton)
+    @OnClick(R.id.btnSend)
     public void onViewClicked() {
         String message = et_message.getText().toString().trim();
         if (!TextUtils.isEmpty(message)) {

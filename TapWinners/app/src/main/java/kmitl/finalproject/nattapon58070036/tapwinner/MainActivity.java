@@ -2,18 +2,20 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
+import com.thunderrise.animations.FlipAnimation;
+import com.thunderrise.animations.PulseAnimation;
+import com.thunderrise.animations.ShakeAnimation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,7 @@ import kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.VersusFriend
 
 
 public class MainActivity extends AppCompatActivity {
+
     @BindView(R.id.profileImage)
     CircleImageView profileImage;
     @BindView(R.id.nameText)
@@ -35,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogout;
     @BindView(R.id.btnPlay)
     Button btnPlay;
+    @BindView(R.id.btnVSFriend)
+    Button btnVSFriend;
     @BindView(R.id.btnChatRoom)
     Button btnChatRoom;
     @BindView(R.id.btnScoreboard)
-    Button btnScoreboard;
-    @BindView(R.id.btnVSFriend)
-    Button btnVSFriend;
+    ImageView btnScoreboard;
 
     private PlayerProfile playerProfile;
     private MediaPlayer mp;
@@ -70,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
             ButterKnife.bind(this);
             setPlayerProfile();
             displayProfile();
+            setViewAnimation();
         }
     }
-
 
     private void goLoginScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -95,6 +98,40 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(playerProfile.getPlayerImage()).into(profileImage);
     }
 
+    private void setViewAnimation() {
+        ShakeAnimation.create().with(nameText)
+                .setDuration(10000)
+                .setRepeatMode(ShakeAnimation.RESTART)
+                .setRepeatCount(ShakeAnimation.INFINITE)
+                .start();
+
+        FlipAnimation.create().with(profileImage)
+                .setDuration(10000)
+                .setRepeatCount(FlipAnimation.INFINITE)
+                .start();
+
+        PulseAnimation.create().with(btnPlay)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
+
+        PulseAnimation.create().with(btnVSFriend)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
+        PulseAnimation.create().with(btnChatRoom)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
+        PulseAnimation.create().with(btnScoreboard)
+                .setDuration(500)
+                .setRepeatCount(PulseAnimation.INFINITE)
+                .setRepeatMode(PulseAnimation.REVERSE)
+                .start();
+    }
 
     @OnClick(R.id.btnLogout)
     public void onBtnLogoutClicked() {
@@ -106,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
     public void onBtnPlayClicked() {
         Intent intent = new Intent(this, PlayActivity.class);
         intent.putExtra("PlayerProfile", playerProfile);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.btnVSFriend)
+    public void onBtnVSFriendClicked() {
+        Intent intent = new Intent(this, VersusFriendActivity.class);
         startActivity(intent);
     }
 
@@ -123,10 +166,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @OnClick(R.id.btnVSFriend)
-    public void onViewClicked() {
-        Intent intent = new Intent(this, VersusFriendActivity.class);
-        startActivity(intent);
-    }
 }
 

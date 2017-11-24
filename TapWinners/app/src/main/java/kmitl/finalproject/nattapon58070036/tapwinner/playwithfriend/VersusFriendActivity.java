@@ -2,9 +2,9 @@ package kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import kmitl.finalproject.nattapon58070036.tapwinner.R;
@@ -24,6 +24,21 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
     private boolean playerOneFinished = false;
     private boolean playerTwoFinished = false;
 
+    private MediaPlayer mp;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mp = MediaPlayer.create(this, R.raw.happyrock);
+        mp.setLooping(true);
+        mp.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

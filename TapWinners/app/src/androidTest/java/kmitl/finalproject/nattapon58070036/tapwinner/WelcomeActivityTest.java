@@ -40,27 +40,72 @@ public class WelcomeActivityTest {
     @Before
     public void welcomeActivityTest() throws InterruptedException {
         Thread.sleep(3000);
-        onView(withId(R.id.loginButton)).check(matches(isDisplayed()));
-        onView(withId(R.id.loginButton)).perform(click());
-        Thread.sleep(3000);
+    }
+
+    @Test
+    public void clickLogin() throws InterruptedException {
+        onView(withId(R.id.btnLogin)).perform(click());
         Thread.sleep(3000);
     }
+
+    @Test
+    public void clickPlayOnline() throws InterruptedException {
+        onView(withId(R.id.btnPlay)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnPlay)).perform(click());
+        onView(withId(R.id.playScreen)).perform(click());
+        Thread.sleep(8000);
+    }
+
+    @Test
+    public void clickScoreBoard() throws InterruptedException {
+        clickPlayOnline();
+        onView(withId(R.id.btnScoreboard)).perform(click());
+        Thread.sleep(2000);
+        onView(isRoot()).perform(ViewActions.pressBack());
+    }
+
+    @Test
+    public void clickPlayAgain() throws InterruptedException {
+        clickPlayOnline();
+        onView(withId(R.id.btnPlayAgain)).perform(click());
+        onView(withId(R.id.playScreen)).perform(click());
+        Thread.sleep(8000);
+    }
+
+    @Test
+    public void clickBackToMain() throws InterruptedException {
+        clickPlayOnline();
+        onView(withId(R.id.btnBackToMain)).perform(click());
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Test
-    public void clickPlayOnline(){
-        onView(withId(R.id.btnPlay)).check(matches(isDisplayed()));
-        onView(withId(R.id.btnPlay)).perform(click());
-        onView(isRoot()).perform(pressBack());
-    }
-
-    @After
-    public void logoutButton() throws InterruptedException {
-        Thread.sleep(3000);
-        onView(withId(R.id.btnLogout)).check(matches(isDisplayed()));
+    public void clickLogout(){
         onView(withId(R.id.btnLogout)).perform(click());
     }
-
 
 
 }

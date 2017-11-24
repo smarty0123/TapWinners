@@ -18,22 +18,22 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="26dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/sendButton"
+        app:layout_constraintRight_toLeftOf="@+id/btnSend"
         android:layout_marginRight="8dp"
         app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginStart="26dp"
         android:layout_marginEnd="8dp" />
 
     <Button
-        android:id="@+id/sendButton"
+        android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:text="@string/send"
         android:background="@drawable/button_background"
+        android:text="@string/send"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/et_message"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginEnd="16dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

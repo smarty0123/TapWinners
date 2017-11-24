@@ -2,6 +2,8 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -16,11 +18,28 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
-    @BindView(R.id.loginButton)
+    @BindView(R.id.btnLogin)
     LoginButton loginButton;
-    @BindView(R.id.imageView2)
-    ImageView imageView2;
+    @BindView(R.id.imageView)
+    ImageView imageView;
     private CallbackManager callbackManager;
+    private AnimationDrawable animation;
+
+    private MediaPlayer mp;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.stop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mp = MediaPlayer.create(this, R.raw.popdance);
+        mp.setLooping(true);
+        mp.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        setLogoAnimation();
+
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -49,6 +70,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setLogoAnimation() {
+        if (imageView == null) throw new AssertionError();
+        imageView.setBackgroundResource(R.drawable.animation_loading);
+        animation = (AnimationDrawable) imageView.getBackground();
+        animation.start();
+    }
+
 
     private void goMainScreen() {
         Intent intent = new Intent(this, WelcomeActivity.class);
