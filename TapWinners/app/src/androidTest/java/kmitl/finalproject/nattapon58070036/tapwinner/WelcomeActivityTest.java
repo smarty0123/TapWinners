@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
@@ -79,28 +80,16 @@ public class WelcomeActivityTest {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Test
+    public void clickChatRoom() throws InterruptedException {
+        clickLogin();
+        Thread.sleep(3000);
+        onView(withId(R.id.btnChatRoom)).check(matches(isDisplayed()));
+        onView(withId(R.id.btnChatRoom)).perform(click());
+        Thread.sleep(3000);
+        onView(withId(R.id.et_message)).perform(replaceText("Hello"));
+        onView(withId(R.id.btnSend)).perform(click());
+    }
 
     @Test
     public void clickLogout(){
