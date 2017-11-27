@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import kmitl.finalproject.nattapon58070036.tapwinner.R;
@@ -49,8 +50,8 @@ public class VersusFriendActivity extends AppCompatActivity implements PlayerOne
     }
 
     private void initFragment() {
-        getSupportFragmentManager().findFragmentById(R.id.player1Container);
-        getSupportFragmentManager().findFragmentById(R.id.player2Container);
+        Fragment player1Container = getSupportFragmentManager().findFragmentById(R.id.player1Container);
+        Fragment player2Container = getSupportFragmentManager().findFragmentById(R.id.player2Container);
 
     }
 
