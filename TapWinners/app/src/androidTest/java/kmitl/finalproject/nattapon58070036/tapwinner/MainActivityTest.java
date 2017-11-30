@@ -2,15 +2,15 @@ package kmitl.finalproject.nattapon58070036.tapwinner;
 
 
 import android.content.Intent;
+
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
+
 import android.support.test.espresso.action.ViewActions;
+
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.support.v4.app.FragmentActivity;
-import android.test.TouchUtils;
+
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.hamcrest.Matcher;
@@ -19,13 +19,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import kmitl.finalproject.nattapon58070036.tapwinner.playwithfriend.VersusFriendActivity;
-
-import static android.app.PendingIntent.getActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.doubleClick;
-import static android.support.test.espresso.action.ViewActions.pressBack;
+
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 
@@ -44,11 +41,10 @@ import static org.hamcrest.Matchers.is;
 public class MainActivityTest {
     private UiDevice mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
     @Rule
-    public IntentsTestRule<MainActivity> mActivityTestRule = new IntentsTestRule<>(MainActivity.class);
-
+    public IntentsTestRule<WelcomeActivity> mActivityTestRule = new IntentsTestRule<>(WelcomeActivity.class);
 
     @Before
-    public void waitWelcomeActivity() throws InterruptedException {
+    public void waitWelcomeActivity() throws InterruptedException{
         Thread.sleep(3000);
     }
 
