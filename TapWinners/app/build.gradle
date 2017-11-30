@@ -8,8 +8,8 @@ android {
         applicationId "kmitl.finalproject.nattapon58070036.tapwinner"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 10
-        versionName "8.2"
+        versionCode 11
+        versionName "8.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
