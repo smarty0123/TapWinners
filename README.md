@@ -1,4 +1,4 @@
-"# Tap-Winners" 
+# TapWinners
 For Mobile Device Programming 2017.
 
 ## ความสามารถต่าง ๆ ของ app
@@ -36,5 +36,5 @@ For Mobile Device Programming 2017.
 [TapWinner](https://drive.google.com/file/d/1KJKHlxHLB5vfCuLZqg7yGbdt2ylhu8cA/view)
 ## ชุดการทดสอบว่าผลการทดสอบเป็นอย่างไรบ้าง ?
 [MonkeyTest](https://www.youtube.com/watch?v=rqWE8iTDev0&t=7s)
-## Upload app ขึ้น Play Store
+## Download from Play Store
 <a href="https://play.google.com/store/apps/details?id=kmitl.finalproject.nattapon58070036.tapwinner&hl=th">![TapWinner](https://github.com/smarty0123/final_project_android/blob/master/TapWinners/imageforwiki/google%20play.png)</a>
